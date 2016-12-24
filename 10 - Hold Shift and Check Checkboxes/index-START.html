@@ -104,16 +104,59 @@
   </div>
 
 <script>
-console.log('helo');
+
+//day 03?
 //get all the divs with class "item"
+const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+
+let lastChecked;
+let atEdge = false;
+let filling = false;
+let shiftClick = false;
+
+function handleCheck(e) {
+  if(lastChecked && shiftClick) {
+    for( i = 0; i < checkboxes.length; i++ ) {
+      atEdge = (checkboxes[i] == lastChecked || checkboxes[i] == e.currentTarget);
+      filling = atEdge ? !filling : filling;
+      if ( !atEdge ) {
+        checkboxes[i].checked = filling;
+      } 
+    }
+  }
+  atEdge = false;
+  filling = false;
+  lastChecked = e.currentTarget;
+}
 
 //add a click event listener on each item
+checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+
+//figure out how to index the items
 
 //Get the index of the last clicked item
 
 //Get the index of the current clicked item
 
 //Check all boxes in between last clicked and current click index if shift key down + click
+
+
+//Day 01 listening for keyboard events
+//Figure out how to tell if it's a shift+click
+function keydown(e) {
+  if(e.keyCode == "16") {
+    shiftClick = true;
+  }
+}
+
+function keyup(e) {
+  if(e.keyCode == "16") {
+    shiftClick = false;
+  }
+}
+
+window.addEventListener('keydown', keydown);
+window.addEventListener('keyup', keyup);
 </script>
 </body>
 </html>
