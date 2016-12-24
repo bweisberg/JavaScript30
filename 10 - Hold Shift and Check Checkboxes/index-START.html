@@ -110,53 +110,42 @@
 const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
 
 let lastChecked;
-let atEdge = false;
-let filling = false;
-let shiftClick = false;
 
 function handleCheck(e) {
-  if(lastChecked && shiftClick) {
-    for( i = 0; i < checkboxes.length; i++ ) {
-      atEdge = (checkboxes[i] == lastChecked || checkboxes[i] == e.currentTarget);
-      filling = atEdge ? !filling : filling;
-      if ( !atEdge ) {
-        checkboxes[i].checked = filling;
-      } 
-    }
+  // Check if they had the shift key down
+  // AND check that they are checking it
+  let inBetween = false;
+  if(e.shiftKey && this.checked) {
+    //go ahead and do what we please
+    //loop over every single checkbox 
+    checkboxes.forEach(checkbox => {
+      if(checkbox === this || checkbox === lastChecked) {
+        inBetween = !inBetween;
+      }
+
+      if(inBetween) {
+        checkbox.checked = true;
+      }
+    })
   }
-  atEdge = false;
-  filling = false;
-  lastChecked = e.currentTarget;
+
+  if(e.shiftKey && lastChecked) {
+    checkboxes.forEach(checkbox => {
+      if (checkbox === this || checkbox === lastChecked) {
+        inBetween = !inBetween;
+      }
+      
+      if(inBetween) {
+        checkbox.checked = true;
+      } 
+    });
+  }
+  lastChecked = this;
 }
 
 //add a click event listener on each item
 checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
 
-//figure out how to index the items
-
-//Get the index of the last clicked item
-
-//Get the index of the current clicked item
-
-//Check all boxes in between last clicked and current click index if shift key down + click
-
-
-//Day 01 listening for keyboard events
-//Figure out how to tell if it's a shift+click
-function keydown(e) {
-  if(e.keyCode == "16") {
-    shiftClick = true;
-  }
-}
-
-function keyup(e) {
-  if(e.keyCode == "16") {
-    shiftClick = false;
-  }
-}
-
-window.addEventListener('keydown', keydown);
-window.addEventListener('keyup', keyup);
 </script>
 </body>
 </html>
